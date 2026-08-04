@@ -1,0 +1,372 @@
+:root {
+    --primary: #0077b6;
+    --secondary: #00b4d8;
+    --success: #2ecc71;
+    --warning: #f1c40f;
+    --danger: #e74c3c;
+    /* Ganti warna dasar biru muda bawaan menjadi gelap gelita */
+    --bg-dark: #0b1519; 
+    --accent: #0077b6;
+}
+
+/* --- STYLE GLOBAL --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #bbdef4; /* Menggunakan warna gelap */
+    min-height: 100vh;
+    width: 100%;
+    overscroll-behavior: none;
+}
+
+h1, h2, h3, button, .menu-card {
+    font-family: 'Poppins', sans-serif;
+}
+
+.hidden { display: none !important; }
+
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+button:hover { background-color: #005f94; }
+
+/* =========================================
+   HALAMAN 1: GERBANG AUTH (LOGIN & SIGN UP)
+   ========================================= */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    background: url('diving.jpeg') no-repeat center center/cover fixed; /* Ditambahkan fixed agar stabil */
+}
+
+.auth-container {
+    background: white;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+.auth-container h2 { color: #003049; margin-bottom: 5px; }
+.auth-container p { color: #7f8c8d; font-size: 14px; margin-bottom: 20px; }
+
+.toggle-link {
+    color: var(--primary);
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+/* =========================================
+   HALAMAN 2: LANDING MENU UTAMA 
+   ========================================= */
+#page-landing {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('diving.jpeg') center/cover no-repeat fixed; /* Ditambahkan fixed agar background mengunci saat ditarik */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.logo-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 5px 15px;
+    background: #ffffff; 
+    border-radius: 50px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.instansi-logo { 
+    height: 45px; 
+    width: auto; 
+    object-fit: contain; 
+}
+
+.hero-content {
+    text-align: center;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 0; 
+}
+
+.hero-content h1 { 
+    font-size: 1.8rem; 
+    line-height: 1.2;
+    margin-bottom: 10px; 
+    color: #ffffff !important; 
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+}
+
+.hero-content p { 
+    font-size: 1.2rem; 
+    color: #f0f0f0 !important; 
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+    margin-bottom: 5px; 
+}
+
+.tagline-text {
+    font-size: 1.05rem !important;
+    font-style: italic;
+    color: #00b4d8 !important; 
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+    margin-top: 0px;
+    margin-bottom: 45px !important;
+}
+
+#nama-operator-aktif {
+    color: #00b4d8 !important; 
+    font-weight: bold;
+}
+
+.landing-menu {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.menu-card {
+    background: white;
+    color: #003049;
+    padding: 15px 30px;
+    border-radius: 12px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 220px;
+    text-decoration: none; 
+    box-sizing: border-box;
+}
+
+.menu-card:hover { 
+    transform: translateY(-4px); 
+    background: var(--primary, #0077b6); 
+    color: white; 
+    box-shadow: 0 12px 25px rgba(0, 119, 182, 0.5);
+}
+
+/* =========================================
+   HALAMAN 3: SISTEM BOOKING & SOP CONTAINER
+   ========================================= */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.main-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 900px; 
+    box-sizing: border-box;
+}
+
+.btn-back {
+    width: auto; background: none; color: gray; font-size: 14px; 
+    border: none; cursor: pointer; padding: 0; margin-bottom: 20px;
+    text-align: left;
+}
+.btn-back:hover { color: #003049; }
+
+.grid-kategori { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-kategori { background: #fff; color: #003049; border: 2px solid var(--primary); }
+.btn-kategori:hover { background: var(--primary); color: white; }
+.site-card { border: 2px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 10px; cursor: pointer; transition: 0.3s;}
+.site-card:hover { border-color: var(--secondary); background: #f0faff; }
+.selected-site { border-color: var(--primary); background: #e0f4ff !important; }
+.status-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; color: white; }
+.bg-hijau { background-color: #2ecc71; }
+.bg-abu { background-color: #9ca3af; }
+.bg-merah { background-color: #e74c3c; }
+.info-box { background: #fff3cd; padding: 10px; border-left: 5px solid #ffecb5; margin: 10px 0; font-size: 14px; }
+
+/* STYLE TABEL RIWAYAT PRIVAT */
+.riwayat-box { margin-top: 35px; border-top: 2px dashed #ddd; padding-top: 25px; }
+.tabel-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #eee; }
+.tabel-modern { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+.tabel-modern th { background-color: #f8fafc; color: #334155; padding: 12px; font-weight: 600; border-bottom: 2px solid #edf2f7; }
+.tabel-modern td { padding: 12px; border-bottom: 1px solid #edf2f7; color: #475569; }
+.tabel-modern tr:hover { background-color: #f8fafc; }
+
+/* =========================================
+   STYLE KHUSUS HALAMAN SOP
+   ========================================= */
+.sop-container {
+    background-color: #bbdef4 !important; /* Diubah menjadi gelap agar selaras */
+    min-height: 100vh;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.sop-nav {
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 20px;
+}
+
+.sop-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.sop-header h1 {
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff; /* Diubah ke putih agar terbaca jelas di background gelap */
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.sop-section {
+    background: #ffffff !important; 
+    padding: 30px 20px !important;
+    border-radius: 24px !important; 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05) !important;
+    width: 100% !important;
+    max-width: 1700px; 
+    box-sizing: border-box;
+}
+
+.sop-section h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #0077b6;
+    border-left: 5px solid #0077b6;
+    padding-left: 12px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.section-desc {
+    color: #091836;
+    margin-bottom: 25px;
+}
+
+.spot-grid, .ethics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.spot-card, .ethics-card {
+    background: #f9f9f9;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    border: 1px solid #ababab;
+}
+
+.ethics-card h3, .spot-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    margin: 15px 0 10px;
+    color: var(--primary);
+}
+
+.ethics-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #666;
+}
+
+.image-wrapper {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.sop-img {
+    width: 100%;      
+    height: auto;      
+    display: block;
+    transition: transform 0.3s;
+}
+
+.sop-img:active {
+    transform: scale(1.5); 
+    cursor: zoom-in;
+}
+
+@media (max-width: 600px) {
+    .sop-header h1 { font-size: 1.6rem; }
+    .sop-section { padding: 20px; }
+    /* Mengubah 100vw menjadi 100% di mobile agar terhindar dari horizontal scroll */
+    #page-landing { width: 100%; } 
+}
+
+/* Pengganti style dinamis baris wisatawan */
+.tamu-row-card {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff;
+    text-align: left;
+}
+
+/* Pengganti style grid layout input */
+.tamu-grid-inputs {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+/* Pengganti style masing-masing field input & select */
+.tamu-input-field {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
