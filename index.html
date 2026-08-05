@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manta Point Arborek - Sistem Konservasi & Reservasi</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== HALAMAN AUTH: hanya berisi Login & Sign Up ===== -->
+<div id="page-auth" class="auth-wrapper">
+    <div id="box-login" class="auth-container">
+        <h2>Sign In Operator & Petugas</h2>
+        <p>Silakan masuk jika akun Anda sudah diverifikasi Admin</p>
+        <input type="text" id="loginUsername" placeholder="Nomor Kontak WhatsApp (Contoh: 08123456789)">
+        <input type="password" id="loginPassword" placeholder="Kata Sandi">
+        <button id="btn-login" onclick="prosesLogin()">LOGIN</button>
+        <span class="toggle-link" onclick="pindahKe('signup')">Operator Baru? Daftar Akun Di Sini</span>
+    </div>
+
+    <div id="box-signup" class="auth-container hidden">
+        <h2>Pendaftaran Operator</h2>
+        <p>Lengkapi data untuk diverifikasi oleh pihak Admin</p>
+        <input type="text" id="regOperator" placeholder="Nama Resmi Operator (Contoh: Korpak Resort)">
+        <input type="tel" id="regWA" placeholder="Nomor Kontak WhatsApp (Contoh: 08123456789)">
+        <input type="password" id="regPassword" placeholder="Buat Kata Sandi Akun">
+        <select id="regKategori">
+            <option value="">-- Pilih Jenis Operator --</option>
+            <option value="Homestay">Homestay</option>
+            <option value="Resort">Resort</option>
+            <option value="Hotel">Hotel</option>
+            <option value="Dive Center">Dive Center</option>
+            <option value="Liveaboard">Kapal Liveaboard</option>
+        </select>
+        <button id="btn-signup" onclick="prosesSignUp()">DAFTAR SEKARANG</button>
+        <!-- id diganti jadi btn-signup-back, tidak boleh sama dengan btn-login di atas -->
+        <button id="btn-signup-back" onclick="pindahKe('login')">MASUK SYSTEM</button>
+        <span class="toggle-link" onclick="pindahKe('login')">Sudah punya akun? Login</span>
+    </div>
+</div>
+
+            <!-- ===== DASHBOARD PETUGAS: SEJAJAR dengan #page-auth, BUKAN di dalamnya ===== -->
+        <div id="page-petugas" class="page-container hidden">
+            <div class="main-card">
+                <h2>Dashboard Pengawasan Manta Point Arborek</h2>
+                <p>Selamat bekerja, <span id="nama-petugas-aktif">Ranger</span>!</p>
+
+                <hr>
+
+                <h3>📋 Data Kunjungan Hari Ini</h3>
+                <div id="loading-petugas">Sedang memuat data logbook...</div>
+
+                <div class="tabel-responsive">
+                    <table class="tabel-modern" id="tabel-petugas" style="display:none;">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Operator</th>
+                                <th>Site Kapasitas</th>
+                                <th>Jam WIT</th>
+                                <th>Jumlah Pax</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="isi-manifes-petugas"></tbody>
+                    </table>
+                </div>
+
+                <div class="form-petugas-box" style="margin-top: 20px; padding: 15px; border: 1px solid #ef4444; border-radius: 8px; background-color: #fef2f2;">
+                    <h3 style="color: #b91c1c;">⚠️ Laporan Pelanggaran Kode Etik</h3>
+                    <form id="formPelanggaran">
+                        <label>Nama Kapal / Operator Pelanggar:</label>
+                        <input type="text" id="pelanggarNama" placeholder="Nama Kapal / Operator" required>
+
+                        <label>Jenis Pelanggaran:</label>
+                        <select id="pelanggarJenis">
+                            <option value="Menyeret tamu pakai pelampung">Menyeret tamu pakai pelampung</option>
+                            <option value="Mengejar / Menyentuh Manta">Mengejar / Menyentuh Manta</option>
+                            <option value="Kapasitas Site Berlebih">Masuk site tanpa izin/over capacity</option>
+                            <option value="Lainnya">Lainnya (Tulis di catatan)</option>
+                        </select>
+
+                        <label>Catatan & Kronologi Kejadian:</label>
+                        <textarea id="pelanggarCatatan" placeholder="Tulis detail kejadian di lapangan..." rows="3"></textarea>
+
+                        <label>Link Foto Bukti Pelanggaran (Jika ada):</label>
+                        <input type="text" id="pelanggarBukti" placeholder="Link dokumen / foto dokumentasi">
+
+                        <button type="button" onclick="kirimLaporanPelanggaran()" style="background-color: #dc2626; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+                            🚨 Kirim Laporan Pelanggaran
+                        </button>
+                    </form>
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <button type="button" onclick="logout()" style="background: #fce8e6; color: #e74c3c; max-width: 220px;">
+                        🚪 Keluar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        </div> <!-- UTAMA: Tag penutup dari #page-petugas -->
+
+        <div id="box-signup" class="auth-container hidden">
+            <h2>Pendaftaran Operator</h2>
+            <p>Lengkapi data untuk diverifikasi oleh pihak Admin</p>
+            <input type="text" id="regOperator" placeholder="Nama Resmi Operator (Contoh: Korpak Resort)">
+            <input type="tel" id="regWA" placeholder="Nomor Kontak WhatsApp (Contoh: 08123456789)">
+            <input type="password" id="regPassword" placeholder="Buat Kata Sandi Akun">
+            <select id="regKategori">
+                <option value="">-- Pilih Jenis Operator --</option>
+                <option value="Homestay">Homestay</option>
+                <option value="Resort">Resort</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Dive Center">Dive Center</option>
+                <option value="Liveaboard">Kapal Liveaboard</option>
+            </select>
+            <button id="btn-signup" onclick="prosesSignUp()">DAFTAR SEKARANG</button>
+            <button id="btn-login" onclick="prosesLogin()">MASUK SYSTEM</button>
+            <span class="toggle-link" onclick="pindahKe('login')">Sudah punya akun? Login</span>
+        </div>
+    </div>
+
+    <div id="page-landing" class="hidden">
+        <div class="logo-header">
+            <img src="PBD.png" alt="PBD" class="instansi-logo">
+            <img src="BLUD.png" alt="BLUD" class="instansi-logo">
+            <img src="LOGO-PARIWISATA-BAHARI.png" alt="Prodi" class="instansi-logo">
+            <img src="LOGO-UNPAD.png" alt="UNPAD" class="instansi-logo">
+        </div>
+
+        <div class="hero-content">
+            <h1>SISTEM RESERVASI MANTA POINT ARBOREK RAJA AMPAT</h1>
+            <p>Selamat Datang, <span id="nama-operator-aktif">Operator</span></p>
+            <p class="tagline-text">"Mari Jaga Laut Raja Ampat Untuk Anak Cucu"</p>
+            <div class="landing-menu">
+                <div class="menu-card" onclick="bukaFitur('booking')"><span>📅</span> Booking Jadwal</div>
+                <div class="menu-card" onclick="bukaFitur('sop')"><span>📜</span> SOP & Etika Manta</div>
+                <a href="https://kkprajaampat.com" class="menu-card"><span>🏛️</span> Tentang Instansi</a>
+                <div class="menu-card" onclick="logout()" style="background: #fce8e6; color: var(--danger);"><span>🚪</span> Keluar</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-booking" class="page-container hidden">
+        <div class="main-card">
+            <button class="btn-back" onclick="kembaliKeMenu('booking')">← Kembali ke Menu Utama</button>
+            
+            <div id="section-kategori">
+                <h2>Pilih Kategori Anda</h2>
+                 <div class="grid-kategori">
+                    <button class="btn-kategori" onclick="selectKategori('Homestay')">Homestay</button>
+                    <button class="btn-kategori" onclick="selectKategori('Resort')">Resort</button>
+                    <button class="btn-kategori" onclick="selectKategori('Hotel')">Hotel</button>
+                    <button class="btn-kategori" onclick="selectKategori('Kapal Liveaboard')">Kapal Liveaboard</button>
+                    <button class="btn-kategori" onclick="selectKategori('Dive Center')" style="grid-column: span 2;">Dive Center</button>
+                </div>
+            </div>
+
+            <div id="section-booking" class="hidden">
+                <h2 id="display-kategori">Booking</h2>
+                <label>Jadwal Kunjungan:</label>
+                <input type="date" id="visitDate">
+                 <div id="jam-operasional-badge" class="info-badge" style="display: block; background: #fef9e7; padding: 8px; border-radius: 5px; margin-bottom: 15px; font-weight: bold; border: 1px solid #f9e79f; color: #7d6608;">
+                        ⏰ Jam Operasional : 07:00 - 16:00 WIT 
+                    </div>
+                 <div class="form-group" style="margin-bottom: 15px;">
+                                <label for="visitTime" style="font-weight: bold; display: block; margin-bottom: 5px;">Pilih Sesi Waktu Kunjungan (WIT):</label>
+                                <select id="visitTime" class="form-control" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 5px; border: 1px solid #ccc;" required>
+                                    <option value="" disabled selected>-- Pilih Waktu --</option>
+                                    <option value="07:00"> 07:00 </option>
+                                    <option value="08:00"> 08:00 </option>
+                                    <option value="09:00"> 09:00 </option>
+                                    <option value="10:00"> 10:00 </option>
+                                    <option value="11:00"> 11:00 </option>
+                                    <option value="12:00"> 12:00 </option>
+                                    <option value="13:00"> 13:00 </option>
+                                    <option value="14:00"> 14:00 </option>
+                                    <option value="15:00"> 15:00 </option>
+                                    <option value="16:00"> 16:00 </option> <!-- Value diperbaiki menjadi 16:00 -->
+                                </select>
+                            </div>
+
+                <label>Nama Operator:</label>
+                <input type="text" id="operatorName" placeholder="Nama Operator" readonly>
+                
+                <div id="site-selection">
+                        <h3>Pilih Lokasi Site</h3>
+                        <div class="site-card" id="site-sandy" onclick="selectSite('Manta Sandy')">
+                            <div class="status-badge bg-abu" id="badge-sandy">Pilih Tanggal & Jam</div>
+                            <strong>Manta Sandy</strong> <p>Khusus Diving | Kapasitas: 20 orang | Perjam</p>
+                        </div>
+                        <div class="site-card" id="site-ridge" onclick="selectSite('Manta Ridge')">
+                            <div class="status-badge bg-abu" id="badge-ridge-div">Diving: Pilih Tanggal & Jam</div>
+                            <div class="status-badge bg-abu" id="badge-ridge-snork" style="margin-top: 4px;">Snorkeling: Pilih Tanggal & Jam</div>
+                            <strong>Manta Ridge</strong> <p>Diving Kapasitas 10 orang & Snorkeling Kapasitas 8 orang |Perjam</p>
+                            <div id="buttons-ridge" class="activity-btn-container" style="display: none; margin-top: 10px; gap: 10px;">
+                                <button type="button" class="btn-act" onclick="selectActivity('diving', event)">Diving</button>
+                                <button type="button" class="btn-act" onclick="selectActivity('snorkeling', event)">Snorkeling</button>
+                            </div>
+                        </div>
+                        <div class="site-card" id="site-Mambarayub" onclick="selectSite('Mambarayub')">
+                            <div class="status-badge bg-abu" id="badge-mambarayub-div">Diving: Pilih Tanggal & Jam</div>
+                            <div class="status-badge bg-abu" id="badge-mambarayub-snork" style="margin-top: 4px;">Snorkeling: Pilih Tanggal & Jam</div>
+                            <strong>Mambarayub</strong> <p>Diving Kapasitas 10 orang & Snorkeling Kapasitas 8 orang |Perjam</p>
+                            <div id="buttons-mambarayub" class="activity-btn-container" style="display: none; margin-top: 10px; gap: 10px;">
+                                <button type="button" class="btn-act" onclick="selectActivity('diving', event)">Diving</button>
+                                <button type="button" class="btn-act" onclick="selectActivity('snorkeling', event)">Snorkeling</button>
+                            </div>
+                        </div>
+               </div>
+
+                <div id="detail-kunjungan-section" class="visit-detail" style="margin-top: 25px;">
+                   
+                    <div id="booking-form" class="hidden">
+                        <h3 id="selected-site-title" style="margin-bottom: 15px; color: #003049;">Detail Kunjungan:</h3>
+                        
+                        <div id="input-kunjungan-wrapper" style="margin-top: 15px;">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label for="tamu-diving" style="font-weight: bold; display: block; margin-bottom: 5px;">Jumlah Tamu:</label>
+                                <input type="number" id="tamu-diving" class="form-control" min="1" oninput="generateInputTamu()" placeholder="Masukkan jumlah tamu" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 5px; border: 1px solid #ccc;">
+                            </div>
+                            
+                            <div class="form-group" id="wrapper-guide" style="display: none; margin-top: 10px; margin-bottom: 15px;">
+                                <label for="tamu-guide" style="font-weight: bold; display: block; margin-bottom: 5px;">Jumlah Guide:</label>
+                                <input type="number" id="tamu-guide" class="form-control" min="0" oninput="generateInputTamu()" placeholder="Masukkan jumlah guide" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 5px; border: 1px solid #ccc;">
+                            </div>
+                        </div>
+
+                        <div id="container-tamu" class="hidden" style="margin-top: 15px; margin-bottom: 15px;"></div>
+                        <div id="pesan-error-booking" class="hidden" style="background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; padding: 10px; border-radius: 6px; margin-bottom: 10px; font-size: 14px; font-weight: bold;"></div>
+                        <button id="btn-submit" onclick="submitBooking()" style="background: #003049; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 10px;">Booking Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="riwayat-box">
+                <h2>Riwayat Booking Saya</h2>
+                <p style="font-size: 13px; color: #64748b; margin-top: -5px;">*Data pesanan tampil selama 3 hari sejak tanggal pemesanan dibuat.</p>
+                <div id="loading-riwayat" style="padding: 15px; background: #f1f5f9; border-radius: 6px; font-size: 14px; color: #475569;">
+                    Memuat riwayat reservasi privat Anda...
+                </div>
+                <div class="tabel-responsive">
+                    <table class="tabel-modern" id="tabel-riwayat" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Tgl Kunjungan</th>
+                                <th>Lokasi Site</th>
+                                <th>Total Pax</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="isi-riwayat">
+                            <!-- Data Riwayat -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-sop" class="sop-container hidden">
+        <div class="sop-nav">
+            <button class="btn-back" onclick="kembaliKeMenu('sop')">← Kembali ke Menu Utama</button>
+        </div>
+        
+        <div class="sop-header">
+            <h1>SOP & Etika Berinteraksi</h1>
+            <p style="color: #003049; margin-top: 5px; font-weight: 500;">Harap dipahami sebelum melakukan kegiatan diving/snorkeling</p>
+        </div>
+
+        <div class="sop-section">
+            <h2>Prosedur Operasional Standar (SOP)</h2>
+            <p class="section-desc">Kenali Lokasi penyelaman Anda untuk pengalaman yang lebih aman.</p>
+
+            <div class="spot-grid">
+                <div class="spot-card">
+                    <div class="image-wrapper">
+                        <img src="SOP-manta-sandy.jpg" alt="Manta Sandy Spot" class="sop-img">
+                    </div>
+                    <div class="spot-info">
+                        <h3>Manta Sandy</h3>
+                    </div>
+                </div>
+
+                <div class="spot-card">
+                    <div class="image-wrapper">
+                        <img src="SOP-manta-ridge.jpg" alt="Manta Ridge Spot" class="sop-img">
+                    </div>
+                    <div class="spot-info">
+                        <h3>Manta Ridge</h3>
+                    </div>
+                </div>
+
+                <div class="spot-card">
+                    <div class="image-wrapper">
+                        <img src="SOP-mambarayup.jpg" alt="Mambarayub Spot" class="sop-img">
+                    </div>
+                    <div class="spot-info">
+                        <h3>Mambarayub</h3>
+                    </div>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 40px;">Etika Berinteraksi dengan Manta</h2>
+            <p class="section-desc">Patuhi aturan berikut demi kelestarian habitat dan keselamatan anda</p>
+
+            <div class="ethics-grid">
+                <div class="ethics-card">
+                    <div class="ethics-badge">Diving</div>
+                    <div class="image-wrapper">
+                        <img src="Etika-diving.jpg" alt="Etika Diving Dengan Manta" class="sop-img">
+                    </div>
+                    <h3>Etika Saat Diving</h3>
+                    <p>Tetap berada di dasar laut, jangan mengejar, dan jaga jarak minimal 3 meter</p>
+                </div>
+
+                <div class="ethics-card">
+                    <div class="ethics-badge snorkeling">Snorkeling</div>
+                    <div class="image-wrapper">
+                        <img src="Etika-snorkeling.jpg" alt="Etika Snorkeling dengan Manta" class="sop-img">
+                    </div>
+                    <div class="ethics-info">
+                        <h3>Etika Saat Snorkeling</h3>
+                        <p>Tetap mengapung dipermukaan, jangan mencoba menyelam ke arah manta</p>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div> 
+
+    <div id="popup-receipt" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
+        <div style="background: #fff; width: 100%; max-width: 400px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); font-family: sans-serif;">
+            <div style="background: #1e3a8a; color: #fff; padding: 20px; text-align: center; position: relative;">
+                <span style="background: #22c55e; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; position: absolute; top: 15px; right: 15px;">✓ BERHASIL</span>
+                <h3 style="margin: 10px 0 5px 0; font-size: 18px;">BUKTI JADWAL KUNJUNGAN</h3>
+                <p style="margin: 0; font-size: 12px; opacity: 0.8;">Platform Reservasi Kawasan Konservasi</p>
+            </div>
+            
+            <div style="padding: 20px; background: #fafafa;">
+                <div style="text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #ddd; padding-bottom: 15px;">
+                    <span style="font-size: 12px; color: #666; display: block; margin-bottom: 5px;">LOKASI DIVING SITE</span>
+                    <strong id="rec-site" style="font-size: 22px; color: #111827;">-</strong>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: #374151;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6b7280;">Nama Operator:</span>
+                        <strong id="rec-operator" style="text-align: right;">-</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6b7280;">Tanggal Kunjungan:</span>
+                        <strong id="rec-date">-</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; background: #fef08a; padding: 6px 10px; border-radius: 6px; border: 1px solid #fef08a;">
+                        <span style="color: #854d0e; font-weight: bold;">Jam Masuk Sesi:</span>
+                        <strong id="rec-time" style="color: #854d0e; font-size: 15px;">-</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6b7280;">Kategori Tiket:</span>
+                        <strong id="rec-category">-</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 10px;">
+                        <span style="color: #6b7280;">Total Personel:</span>
+                        <strong id="rec-pax">- Orang</strong>
+                    </div>
+                </div>
+                
+                <p style="margin: 20px 0 0 0; text-align: center; font-size: 11px; color: #9ca3af; font-style: italic;">
+                    *Silakan tunjukkan bukti ini atau screenshot kepada petugas lapangan saat masuk site.
+                </p>
+            </div>
+
+            <div style="padding: 15px; background: #fff; border-top: 1px solid #eee; text-align: center;">
+                <button onclick="tutupStrukBooking()" style="background: #1e3a8a; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">
+                    Selesai & Kembali
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
